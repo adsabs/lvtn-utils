@@ -8,7 +8,7 @@ You can contribute in many ways:
 
 ### Report Bugs
 
-Report bugs at <https://github.com/adsabs/lvtn1-utils/issues>.
+Report bugs at <https://github.com/adsabs/lvtn1_utils/issues>.
 
 If you are reporting a bug, please include:
 
@@ -30,7 +30,7 @@ lvtn1-utils could always use more documentation, whether as part of the official
 
 ### Submit Feedback
 
-The best way to send feedback is to file an issue at <https://github.com/adsabs/lvtn1-utils/issues>.
+The best way to send feedback is to file an issue at <https://github.com/adsabs/lvtn1_utils/issues>.
 
 If you are proposing a feature:
 
@@ -47,7 +47,7 @@ Ready to contribute? Here's how to set yourself up for local development.
 2.  Clone your fork locally:
 
     ```shell
-    $ git clone git@github.com:your_name_here/lvtn1-utils.git
+    $ git clone git@github.com:your_name_here/lvtn1_utils.git
     ```
 
 3.  Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development:

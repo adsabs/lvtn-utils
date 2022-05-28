@@ -2,6 +2,6 @@
 
 <!--next-version-placeholder-->
 
-## v0.0.1 (2022-05-10)
+## v0.0.1 (2022-05-28)
 
 - Initial version

@@ -39,7 +39,7 @@ class TestInit(unittest.TestCase):
 
         time.sleep(0.01)
         # now multiline message
-        logger.warning(u"second\nthird")
+        logger.warning("second\nthird")
         logger.warning("last")
         c = _read_file(foo_log)
 
@@ -48,7 +48,7 @@ class TestInit(unittest.TestCase):
         for x in c.strip().split("\n"):
             j = json.loads(x)
             self.assertTrue(j)
-            if j["message"] == u"second\nthird":
+            if j["message"] == "second\nthird":
                 found = True
             t = lvtn1_utils.get_date(j["asctime"])
             if t.microsecond > 0:
@@ -60,13 +60,13 @@ class TestInit(unittest.TestCase):
     def test_u2asc(self):
 
         input1 = "benìtez, n"
-        input2 = u"izzet, sakallı"
+        input2 = "izzet, sakallı"
 
         output1 = lvtn1_utils.u2asc(input1)
         output2 = lvtn1_utils.u2asc(input2)
 
         self.assertEqual(output1, "benitez, n")
-        self.assertEqual(output2, u"izzet, sakalli")
+        self.assertEqual(output2, "izzet, sakalli")
 
         input3 = input2.encode("utf16")
         self.assertRaises(UnicodeHandlerError, lvtn1_utils.u2asc, input3)

@@ -147,3 +147,4 @@ logs/
 local_config
 **/.DS_Store
 *.idea
+secrets/

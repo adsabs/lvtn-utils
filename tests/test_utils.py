@@ -39,7 +39,8 @@ class TestApp(unittest.TestCase):
     def test_load_module(self):
         f = os.path.abspath(
             os.path.join(
-                os.path.dirname(inspect.getsourcefile(lvtn1_utils)), "../tests/config_sample.py"
+                os.path.dirname(inspect.getsourcefile(lvtn1_utils)),
+                "../tests/config_sample.py",
             )
         )
         x = lvtn1_utils.load_module(f)

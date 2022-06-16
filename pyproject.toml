@@ -49,8 +49,8 @@ dev = [
     "mock==4.0.3",
     "coverage==6.2",
     "pytest-cov==3.0.0",
-    "pytest-cookies==0.6.1",
     "semantic-release==0.1.0",
+    "pytest-cookies==0.6.1",
 ]
 
 docs = [
@@ -59,6 +59,8 @@ docs = [
     "sphinx-rtd-theme==1.0.0",
 ]
 
+[tool.acutter]
+template = "python_package"
 [tool.semantic_release]
 branch = "main"
 version_toml = "pyproject.toml:project.version"
@@ -67,6 +69,10 @@ build_command = "flit build"
 [tool.pytest.ini_options]
 addopts = "-v -Wdefault --cov=lvtn1_utils"
 cache_dir = ".tmp/"
+testpaths = [
+    "tests",
+]
+
 [tool.coverage.run]
 data_file = ".tmp/.coverage"
 
@@ -81,7 +87,7 @@ known_first_party = [
 ]
 
 [tool.black]
-line-length = 99
+line-length = 95
 
 [build-system]
 requires = [

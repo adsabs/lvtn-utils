@@ -34,4 +34,5 @@ repos:
     rev: v0.17.0
     hooks:
       - id: gitlint
-        args: [--ignore=body-is-missing, -c, body-min-length.min-length=0, --msg-filename]
+        args: [--ignore=body-is-missing, -c, body-min-length.min-length=0, --contrib=CT1, --msg-filename]
+        stages: [commit-msg]

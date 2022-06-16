@@ -1,11 +1,11 @@
 [project]
-name = "lvtn1_utils"
+name = "lvtn_utils"
 version = "0.0.1"
 description = "Leviattan utils, layer 1"
 license = { text = "MIT" }
 readme = "README.md"
-repository = "https://github.com/adsabs/lvtn1_utils"
-documentation = "https://lvtn1_utils.readthedocs.io"
+repository = "https://github.com/adsabs/lvtn_utils"
+documentation = "https://lvtn_utils.readthedocs.io"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 packages = [
-    "lvtn1_utils",
+    "lvtn_utils",
 ]
 
 dependencies = [
@@ -34,8 +34,8 @@ name = "Roman Chyla"
 email = "roman.chyla@gmail.com"
 
 [project.urls]
-Source = "https://github.com/adsabs/lvtn1_utils"
-Documentation = "https://lvtn1_utils.readthedocs.io"
+Source = "https://github.com/adsabs/lvtn_utils"
+Documentation = "https://lvtn_utils.readthedocs.io"
 [project.optional-dependencies]
 dev = [
     "black==22.3.0",
@@ -64,10 +64,10 @@ template = "python_package"
 [tool.semantic_release]
 branch = "main"
 version_toml = "pyproject.toml:project.version"
-version_variable = "lvtn1_utils/version.py:__version__"
+version_variable = "lvtn_utils/version.py:__version__"
 build_command = "flit build"
 [tool.pytest.ini_options]
-addopts = "-v -Wdefault --cov=lvtn1_utils"
+addopts = "-v -Wdefault --cov=lvtn_utils"
 cache_dir = ".tmp/"
 testpaths = [
     "tests",
@@ -82,7 +82,7 @@ skip_covered = true
 [tool.isort]
 profile = "black"
 known_first_party = [
-    "lvtn1_utils",
+    "lvtn_utils",
     "tests",
 ]
 

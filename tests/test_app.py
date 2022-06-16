@@ -2,7 +2,7 @@
 
 import unittest
 
-from lvtn1_utils import ProjectWorker
+from lvtn_utils import ProjectWorker
 
 
 class TestUpdateRecords(unittest.TestCase):

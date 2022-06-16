@@ -29,7 +29,7 @@ from pythonjsonlogger import jsonlogger
 from sqlalchemy import TIMESTAMP, create_engine, types
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from lvtn1_utils.term import safe_str
+from lvtn_utils.term import safe_str
 
 from .exceptions import UnicodeHandlerError
 from .term import colored

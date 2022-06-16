@@ -6,8 +6,8 @@ import time
 import unittest
 from inspect import currentframe, getframeinfo
 
-import lvtn1_utils
-from lvtn1_utils.exceptions import UnicodeHandlerError
+import lvtn_utils
+from lvtn_utils.exceptions import UnicodeHandlerError
 
 
 def _read_file(fpath):
@@ -21,7 +21,7 @@ class TestInit(unittest.TestCase):
         foo_log = logdir + "/foo.bar.log"
         if os.path.exists(foo_log):
             os.remove(foo_log)
-        logger = lvtn1_utils.setup_logging("foo.bar")
+        logger = lvtn_utils.setup_logging("foo.bar")
         logger.warning("first")
         frameinfo = getframeinfo(currentframe())
 
@@ -50,7 +50,7 @@ class TestInit(unittest.TestCase):
             self.assertTrue(j)
             if j["message"] == "second\nthird":
                 found = True
-            t = lvtn1_utils.get_date(j["asctime"])
+            t = lvtn_utils.get_date(j["asctime"])
             if t.microsecond > 0:
                 msecs = True
 
@@ -62,14 +62,14 @@ class TestInit(unittest.TestCase):
         input1 = "benìtez, n"
         input2 = "izzet, sakallı"
 
-        output1 = lvtn1_utils.u2asc(input1)
-        output2 = lvtn1_utils.u2asc(input2)
+        output1 = lvtn_utils.u2asc(input1)
+        output2 = lvtn_utils.u2asc(input2)
 
         self.assertEqual(output1, "benitez, n")
         self.assertEqual(output2, "izzet, sakalli")
 
         input3 = input2.encode("utf16")
-        self.assertRaises(UnicodeHandlerError, lvtn1_utils.u2asc, input3)
+        self.assertRaises(UnicodeHandlerError, lvtn_utils.u2asc, input3)
 
 
 if __name__ == "__main__":

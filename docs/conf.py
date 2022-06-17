@@ -18,7 +18,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "lvtn1-utils"
+project = "lvtn-utils"
 copyright = "2020, Roman Chyla"
 author = "Roman Chyla"
 

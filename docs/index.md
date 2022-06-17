@@ -1,4 +1,4 @@
-# Welcome to lvtn1-utils documentation!
+# Welcome to lvtn-utils documentation!
 
 <!---
 For help on documentation syntax, see: https://myst-parser.readthedocs.io/en/latest/syntax/syntax.html

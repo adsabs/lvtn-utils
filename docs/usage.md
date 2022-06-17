@@ -3,7 +3,7 @@
 To use this package, import it:
 
 ```python
-import lvtn1_utils
+import lvtn_utils
 ```
 
 TODO: Document usage

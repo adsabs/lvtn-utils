@@ -1,8 +1,8 @@
 # Installation
 
-The package is published on [PyPI](https://pypi.org/project/lvtn1_utils/)
+The package is published on [PyPI](https://pypi.org/project/lvtn_utils/)
 and can be installed with `pip` (or any equivalent):
 
 ```bash
-pip install lvtn1_utils
+pip install lvtn_utils
 ```

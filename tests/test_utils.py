@@ -108,12 +108,13 @@ class TestDbType(unittest.TestCase):
             id = sa.Column(sa.Integer, primary_key=True)
             created = sa.Column(lvtn_utils.UTCDateTime, default=lvtn_utils.get_date)
             updated = sa.Column(lvtn_utils.UTCDateTime)
+            value = sa.Column(sa.String, unique=True)
 
         base.metadata.bind = self.app._engine
         base.metadata.create_all()
 
         with self.app.db_session() as session:
-            session.add(Test())
+            session.add(Test(value="x"))
             m = session.query(Test).first()
             assert m.created
             assert m.created.tzname() == "UTC"
@@ -136,6 +137,28 @@ class TestDbType(unittest.TestCase):
 
             result = session.execute(select(Test).filter_by(id=1)).first()
             assert result[0].created == t
+
+        with self.app.db_session() as session:
+            t = Test(value="foo")
+            session.add(t)
+            session.commit()
+
+        # do nothing (no error raised)
+        with self.app.db_session() as session:
+            t = Test(value="foo")
+            upsert = self.app.upsert_stmt(t, conflicts=["value"])
+            session.execute(upsert)
+
+        # update value on conflict
+        with self.app.db_session() as session:
+            t = Test(value="foo")
+            upsert = self.app.upsert_stmt(t, conflicts=["value"], update={"value": "bar"})
+            print(upsert)
+            session.execute(upsert)
+
+        with self.app.db_session() as session:
+            t = session.query(Test).filter_by(id=2).one()
+            assert t.value == "bar"
 
         # not ideal, but db exists in memory anyways...
         base.metadata.drop_all()

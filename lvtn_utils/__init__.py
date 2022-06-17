@@ -27,6 +27,7 @@ from dateutil import parser, tz
 from past.builtins import basestring
 from pythonjsonlogger import jsonlogger
 from sqlalchemy import TIMESTAMP, create_engine, types
+from sqlalchemy.dialects import postgresql, sqlite
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from lvtn_utils.term import safe_str
@@ -421,6 +422,44 @@ class ProjectWorker(object):
             raise (e)
         finally:
             s.close()
+
+    def upsert_stmt(self, orm_obj, update=None, conflicts=None):
+        """Generates an UPSERT statement - per db engine dialect"""
+
+        dial = self._session.bind.dialect.name
+        vals = {}
+        idx = []
+        for col in orm_obj.__table__.columns:
+            key = col.name
+            if key in orm_obj.__dict__:
+                vals[key] = orm_obj.__dict__[key]
+            if col.primary_key or col.unique:
+                idx.append(col.name)
+
+        if dial == "sqlite":
+
+            stmt = sqlite.insert(orm_obj.__table__).values(vals)
+            if update:
+                stmt = stmt.on_conflict_do_update(
+                    index_elements=conflicts and conflicts or idx, set_=dict(update)
+                )
+            else:
+                stmt = stmt.on_conflict_do_nothing(
+                    index_elements=conflicts and conflicts or idx
+                )
+        elif dial == "postgresql":
+            stmt = postgresql.insert(orm_obj).values(vals)
+            if update:
+                stmt = stmt.on_conflict_do_update(
+                    index_elements=conflicts and conflicts or idx, set_=dict(update)
+                )
+            else:
+                stmt = stmt.on_conflict_do_nothing(index_elements=idx)
+        else:
+            raise Exception(
+                "Sorry, we dont handle {} - you can add it, though...".format(dial)
+            )
+        return stmt
 
 
 class MultilineMessagesFormatter(Formatter):

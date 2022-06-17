@@ -360,7 +360,7 @@ class ProjectWorker(object):
             )
             self._session_factory = sessionmaker()
             self._session = scoped_session(self._session_factory)
-            self._session.configure(bind=self._engine)
+            self._session.configure(bind=self._engine, future=True)
             register_after_fork(self._engine, self._engine.dispose)
 
         # HTTP connection pool

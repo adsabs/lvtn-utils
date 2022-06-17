@@ -5,6 +5,7 @@ from builtins import str
 
 import sqlalchemy as sa
 from mock import patch
+from sqlalchemy import select
 from sqlalchemy.ext.declarative import declarative_base
 
 import lvtn_utils
@@ -130,6 +131,11 @@ class TestDbType(unittest.TestCase):
             session.commit()
             m = session.query(Test).first()
             assert m.created == t
+
+            # new sqlalchemy 2.0 query style
+
+            result = session.execute(select(Test).filter_by(id=1)).first()
+            assert result[0].created == t
 
         # not ideal, but db exists in memory anyways...
         base.metadata.drop_all()

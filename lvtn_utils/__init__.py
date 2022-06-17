@@ -437,30 +437,22 @@ class ProjectWorker(object):
                 idx.append(col.name)
 
         if dial == "sqlite":
-
-            stmt = sqlite.insert(orm_obj.__table__).values(vals)
-            if update:
-                stmt = stmt.on_conflict_do_update(
-                    index_elements=conflicts and conflicts or idx, set_=dict(update)
-                )
-            else:
-                stmt = stmt.on_conflict_do_nothing(
-                    index_elements=conflicts and conflicts or idx
-                )
+            dialect = sqlite
         elif dial == "postgresql":
-            stmt = postgresql.insert(orm_obj.__table__).values(vals)
-            if update:
-                stmt = stmt.on_conflict_do_update(
-                    index_elements=conflicts and conflicts or idx, set_=dict(update)
-                )
-            else:
-                stmt = stmt.on_conflict_do_nothing(
-                    index_elements=conflicts and conflicts or idx
-                )
+            dialect = postgresql
         else:
             raise Exception(
                 "Sorry, we dont handle {} - you can add it, though...".format(dial)
             )
+
+        stmt = dialect.insert(orm_obj.__table__).values(vals)
+        if update:
+            stmt = stmt.on_conflict_do_update(
+                index_elements=conflicts and conflicts or idx, set_=dict(update)
+            )
+        else:
+            stmt = stmt.on_conflict_do_nothing(index_elements=conflicts and conflicts or idx)
+
         return stmt
 
 

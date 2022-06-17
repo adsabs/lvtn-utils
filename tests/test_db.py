@@ -36,7 +36,7 @@ class BaseDatabase(unittest.TestCase):
         self.app.close_app()
 
 
-class Tests:
+class Cases:
     def test_utcdatetime_type(self):
 
         with self.app.db_session() as session:
@@ -86,7 +86,7 @@ class Tests:
             assert t.value == "bar"
 
 
-class TestSqlite(BaseDatabase, Tests):
+class TestSqlite(BaseDatabase, Cases):
     def create_app(self):
         return ProjectWorker(
             "testsqlite",
@@ -94,7 +94,7 @@ class TestSqlite(BaseDatabase, Tests):
         )
 
 
-class TestPostgres(BaseDatabase, Tests):
+class TestPostgres(BaseDatabase, Cases):
     postgresql_url_dict = {
         "port": 1234,
         "host": "127.0.0.1",

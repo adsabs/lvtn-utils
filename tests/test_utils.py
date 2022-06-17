@@ -3,10 +3,7 @@ import os
 import unittest
 from builtins import str
 
-import sqlalchemy as sa
 from mock import patch
-from sqlalchemy import select
-from sqlalchemy.ext.declarative import declarative_base
 
 import lvtn_utils
 
@@ -86,82 +83,6 @@ class TestApp(unittest.TestCase):
         conf = {"FOO": 1, "BAR": False}
         lvtn_utils.conf_update_from_env("ORCID_PIPELINE", conf)
         self.assertEqual(conf, {"FOO": 2, "BAR": True})
-
-
-class TestDbType(unittest.TestCase):
-    def setUp(self):
-        unittest.TestCase.setUp(self)
-        self.app = lvtn_utils.ProjectWorker(
-            "test", local_config={"SQLALCHEMY_URL": "sqlite:///", "SQLALCHEMY_ECHO": False}
-        )
-
-    def tearDown(self):
-        unittest.TestCase.tearDown(self)
-        self.app.close_app()
-
-    def test_utcdatetime_type(self):
-
-        base = declarative_base()
-
-        class Test(base):
-            __tablename__ = "testdate"
-            id = sa.Column(sa.Integer, primary_key=True)
-            created = sa.Column(lvtn_utils.UTCDateTime, default=lvtn_utils.get_date)
-            updated = sa.Column(lvtn_utils.UTCDateTime)
-            value = sa.Column(sa.String, unique=True)
-
-        base.metadata.bind = self.app._engine
-        base.metadata.create_all()
-
-        with self.app.db_session() as session:
-            session.add(Test(value="x"))
-            m = session.query(Test).first()
-            assert m.created
-            assert m.created.tzname() == "UTC"
-            assert "+00:00" in str(m.created)
-
-            current = lvtn_utils.get_date("2018-09-07T20:22:02.249389+00:00")
-            m.updated = current
-            session.commit()
-
-            m = session.query(Test).first()
-            assert str(m.updated) == str(current)
-
-            t = lvtn_utils.get_date()
-            m.created = t
-            session.commit()
-            m = session.query(Test).first()
-            assert m.created == t
-
-            # new sqlalchemy 2.0 query style
-
-            result = session.execute(select(Test).filter_by(id=1)).first()
-            assert result[0].created == t
-
-        with self.app.db_session() as session:
-            t = Test(value="foo")
-            session.add(t)
-            session.commit()
-
-        # do nothing (no error raised)
-        with self.app.db_session() as session:
-            t = Test(value="foo")
-            upsert = self.app.upsert_stmt(t, conflicts=["value"])
-            session.execute(upsert)
-
-        # update value on conflict
-        with self.app.db_session() as session:
-            t = Test(value="foo")
-            upsert = self.app.upsert_stmt(t, conflicts=["value"], update={"value": "bar"})
-            print(upsert)
-            session.execute(upsert)
-
-        with self.app.db_session() as session:
-            t = session.query(Test).filter_by(id=2).one()
-            assert t.value == "bar"
-
-        # not ideal, but db exists in memory anyways...
-        base.metadata.drop_all()
 
 
 if __name__ == "__main__":

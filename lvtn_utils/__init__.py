@@ -448,13 +448,15 @@ class ProjectWorker(object):
                     index_elements=conflicts and conflicts or idx
                 )
         elif dial == "postgresql":
-            stmt = postgresql.insert(orm_obj).values(vals)
+            stmt = postgresql.insert(orm_obj.__table__).values(vals)
             if update:
                 stmt = stmt.on_conflict_do_update(
                     index_elements=conflicts and conflicts or idx, set_=dict(update)
                 )
             else:
-                stmt = stmt.on_conflict_do_nothing(index_elements=idx)
+                stmt = stmt.on_conflict_do_nothing(
+                    index_elements=conflicts and conflicts or idx
+                )
         else:
             raise Exception(
                 "Sorry, we dont handle {} - you can add it, though...".format(dial)

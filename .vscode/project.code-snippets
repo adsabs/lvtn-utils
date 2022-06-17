@@ -1,0 +1,8 @@
+{
+    "unittest-template": {
+        "scope": "python",
+        "prefix": "unittest",
+        "description": "Python unittest template",
+        "body": "import unittest\n\n\nclass Test${1:Name}(unittest.TestCase):\n    def test_${2:case}(self):\n        pass\n\n\nif __name__ == \"__main__\":\n    unittest.main()"
+    }
+}
